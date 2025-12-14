@@ -301,5 +301,10 @@ This project is for educational purposes.
 
 ---
 
+##admin
+
+Username:admin
+password:admin
+
 **Last Updated**: December 2025
 "# college-fits-plane" 
