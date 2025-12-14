@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="bg-dark text-white p-5 rounded text-center mb-5">
+    <h1 class="display-5 fw-bold">FitPlanHub</h1>
+    <p class="lead">Discover expert-designed fitness plans from certified trainers.</p>
+
+    {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="btn btn-success btn-lg me-2">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg">Sign Up</a>
+    {% else %}
+        {% if user.is_trainer %}
+            <a href="{% url 'trainer_dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        {% else %}
+            <a href="{% url 'user_feed' %}" class="btn btn-primary btn-lg">Go to My Feed</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Plans Section -->
+<h2 class="mb-4 text-center">Available Fitness Plans</h2>
+<div class="row">
+    {% for plan in plans %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ plan.title }}</h5>
+                <p class="text-muted">Trainer: {{ plan.trainer.username }}</p>
+                <p class="text-secondary">Duration: {{ plan.duration }} days</p>
+                <h6 class="text-success">₹ {{ plan.price }}</h6>
+            </div>
+            <div class="card-footer bg-white border-0">
+                {% if user.is_authenticated %}
+                    {% if user.is_trainer %}
+                        <a href="{% url 'trainer_dashboard' %}" class="btn btn-primary w-100">Edit / View</a>
+                    {% else %}
+                        {% if plan.id in subscribed_plans %}
+                            <a href="{% url 'plan_detail' plan.id %}" class="btn btn-success w-100">View Plan</a>
+                        {% else %}
+                            <a href="{% url 'subscribe' plan.id %}" class="btn btn-warning w-100">Subscribe</a>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary w-100">Login to View</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+        <p>No fitness plans available yet.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

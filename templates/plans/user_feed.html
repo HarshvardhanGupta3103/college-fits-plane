@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>My Feed</h3>
+
+<div class="row">
+    {% for plan in plans %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5>{{ plan.title }}</h5>
+                <p>Trainer: {{ plan.trainer.username }}</p>
+                <p>Duration: {{ plan.duration }} days</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'plan_detail' plan.id %}" class="btn btn-primary w-100">View Plan</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p>No plans from followed trainers. Follow some trainers to see their plans!</p>
+    {% endfor %}
+</div>
+{% endblock %}

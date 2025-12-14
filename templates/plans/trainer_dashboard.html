@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Trainer Dashboard</h3>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card shadow p-3 mb-4">
+            <h5>Create New Fitness Plan</h5>
+            <form method="post">
+                {% csrf_token %}
+                <input class="form-control mb-2" name="title" placeholder="Plan Title" required>
+                <textarea class="form-control mb-2" name="description" placeholder="Description" required></textarea>
+                <input class="form-control mb-2" name="price" placeholder="Price" required>
+                <input class="form-control mb-2" name="duration" placeholder="Duration (days)" required>
+                <button class="btn btn-primary w-100">Create Plan</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h5>Your Plans</h5>
+        <div class="row">
+            {% for plan in plans %}
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h6>{{ plan.title }}</h6>
+                        <p>₹{{ plan.price }} | {{ plan.duration }} days</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'plan_detail' plan.id %}" class="btn btn-sm btn-primary w-100">View</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>You have not created any plans yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

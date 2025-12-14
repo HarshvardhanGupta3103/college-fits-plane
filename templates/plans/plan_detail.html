@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow p-4">
+    <h3>{{ plan.title }}</h3>
+    <p><strong>Trainer:</strong> {{ plan.trainer.username }}</p>
+    <p><strong>Price:</strong> ₹{{ plan.price }}</p>
+    {% if subscribed %}
+        <p>{{ plan.description }}</p>
+        <p>Duration: {{ plan.duration }} days</p>
+    {% else %}
+        <p class="text-danger">Subscribe to view full plan</p>
+        <a href="{% url 'subscribe' plan.id %}" class="btn btn-success">Subscribe (Simulated Payment)</a>
+    {% endif %}
+</div>
+{% endblock %}
